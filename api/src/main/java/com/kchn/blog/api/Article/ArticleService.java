@@ -103,7 +103,7 @@ public class ArticleService {
         titleMatcher.find();
         String shortTitle = titleMatcher.group(0);
         
-        String url = shortTitle.replaceAll(" ", "-");
+        String url = shortTitle.replaceAll(" ", "-").toLowerCase();
         
         Optional<Article> maybeArticle = 
             Optional.ofNullable(this.repository.findArticleByUrl(url));
