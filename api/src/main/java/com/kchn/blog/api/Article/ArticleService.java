@@ -1,14 +1,13 @@
 package com.kchn.blog.api.Article;
 
-import java.security.SecureRandom;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.catalina.filters.ExpiresFilter.XServletOutputStream;
-import org.apache.catalina.startup.ListenerCreateRule.OptionalListener;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -68,7 +67,7 @@ public class ArticleService {
      * @param title will be processed into a url
      * @return url as string
      */
-    public String generateUniqueUrl(String title) {
+    private String generateUniqueUrl(String title) {
         /*
          * Limit title to 6ish words
          * Replace spaces with dash
@@ -83,7 +82,8 @@ public class ArticleService {
         
         String url = shortTitle.replaceAll(" ", "-");
         
-        Optional<Article> maybeArticle = Optional.ofNullable(this.repository.findArticleByUrl(url));
+        Optional<Article> maybeArticle = 
+            Optional.ofNullable(this.repository.findArticleByUrl(url));
         
 //        While the url exists in the repository, generate random string to concat onto the end and re-search.
         while (!maybeArticle.isEmpty()) {
@@ -139,6 +139,98 @@ public class ArticleService {
         article.setUrl(this.generateUniqueUrl(article.getTitle()));
         
         return this.repository.save(article);
+    }
+    
+    /**
+     * Update article by specifying the article id and fields in the request body.
+     * @param id
+     * @param incomingBody
+     * @return updated article
+     */
+    public Article update(Long id, ArticlePatchDTO incomingBody) {
+        
+        /*
+         * Every field is optional. 
+         * I don't think there's anything wrong with an empty patch request?
+         * 
+         * Create new empty article.
+         * Throw if article is not found.
+         * Else for each possible field,
+         *      If field is valid, add to article.
+         *      if not do nothing.
+         *      
+         * Lastly set the last edit to the current time.
+         */
+        
+        Optional<Article> maybeArticle = 
+            Optional.ofNullable(this.repository.getById(id));
+        
+        maybeArticle.ifPresentOrElse(value -> {}, () -> {
+            throw new CustomApiException(
+                HttpStatus.NOT_FOUND,
+                "Specified record " + id + " not found");
+        });
+        
+        Article article = maybeArticle.get();
+        
+        String bodyTitle = incomingBody.getTitle();
+        String bodyByline = incomingBody.getByline();
+        String bodyKicker = incomingBody.getKicker();
+        String bodyMetaTitle = incomingBody.getMetaTitle();
+        String bodyMetaDesc = incomingBody.getMetaDesc();
+        String bodyAuthor = incomingBody.getAuthor();
+        
+        if (bodyTitle != null && bodyTitle.length() > 0) {
+            article.setTitle(bodyTitle);
+        }
+        
+        if (bodyByline != null && bodyByline.length() > 0) {
+            article.setByline(bodyByline);
+        }
+        
+        if(bodyKicker != null && bodyKicker.length() > 0) {
+            article.setKicker(bodyKicker);
+        }
+        
+        if(bodyMetaTitle != null && bodyMetaTitle.length() > 0) {
+            article.setMetaTitle(bodyMetaTitle);
+        }
+        
+        if(bodyMetaDesc != null && bodyMetaDesc.length() > 0) {
+            article.setMetaDesc(bodyMetaDesc);
+        }
+        
+        if(bodyAuthor != null && bodyAuthor.length() > 0) {
+            article.setAuthor(bodyAuthor);
+        }
+        
+        article.setLastEdit(LocalDate.now());
+        
+        return repository.save(article);
+    }
+    
+    /**
+     * Checks if article exists then deletes it.
+     * @param id
+     */
+    public void delete(Long id) {
+        
+        /*
+         * Delete article
+         * 
+         * See if article exists.
+         * If not throw,
+         * 
+         * If yes, delete.
+         */
+        
+        if (this.repository.findById(id).isEmpty()) {
+            throw new CustomApiException(
+                HttpStatus.NOT_FOUND,
+                "Specified record " + id + " not found");
+        }
+        
+        this.repository.deleteById(id);
     }
     
 }

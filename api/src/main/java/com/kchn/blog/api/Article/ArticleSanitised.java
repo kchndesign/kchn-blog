@@ -2,42 +2,20 @@ package com.kchn.blog.api.Article;
 
 import java.time.LocalDate;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
-import org.hibernate.annotations.ValueGenerationType;
-
 /**
- * This Article class describes both the schema of the database we use and the object we pass around called article.
+ * This class describes the sanitised article that will be sent to users who search by
  * @author kevin
  *
  */
-@Entity
-public class Article {
 
-    /**
-     * ID to be used by the backend and the database.
-     */
-    @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
-    private Long id;
-    
+public class ArticleSanitised {
+
     private String title;
     
     private String byline;
     
-    /**
-     * Long string of markdown content.
-     */
     private String content;
     
-    /**
-     * I intend to make each URL unique and serve as a way to fetch individual articles.
-     * [backend-url]/api/articles/this-url for example would be fetched from this frontend url: 
-     * blog.[frontend-url]/this-url
-     */
     private String url;
     
     private String kicker;
@@ -52,20 +30,17 @@ public class Article {
     
     private String author;
 
-    /**
-     * Create empty article
-     */
-    public Article() {
+    public ArticleSanitised() {
     }
     
     
     /**
-     * Create article with only mandatory Post fields.
+     * Create article with only mandatory fields.
      * @param title
      * @param content
      * @param author
      */
-    public Article(String title, String content, String author) {
+    public ArticleSanitised(String title, String content, String author) {
         super();
         this.title = title;
         this.content = content;
@@ -84,9 +59,8 @@ public class Article {
      * @param published
      * @param lastEdit
      */
-    public Article(Long id, String title, String byline, String content,
+    public ArticleSanitised( String title, String byline, String content,
         String url, String kicker, String metaTitle, String metaDesc, LocalDate published, LocalDate lastEdit) {
-        this.id = id;
         this.title = title;
         this.byline = byline;
         this.content = content;
@@ -97,11 +71,7 @@ public class Article {
         this.published = published;
         this.lastEdit = lastEdit;
     }
-
-    public Long getId() {
-        return id;
-    }
-
+    
     public String getTitle() {
         return title;
     }
@@ -148,11 +118,6 @@ public class Article {
         return author;
     }
 
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public void setTitle(String title) {
         this.title = title;
     }
@@ -189,5 +154,5 @@ public class Article {
         this.author = author;
     }
 
-    
+        
 }
