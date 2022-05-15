@@ -7,8 +7,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import org.hibernate.annotations.ValueGenerationType;
-
 /**
  * This Article class describes both the schema of the database we use and the object we pass around called article.
  * @author kevin

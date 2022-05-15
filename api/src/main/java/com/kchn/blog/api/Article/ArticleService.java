@@ -30,6 +30,7 @@ public class ArticleService {
 
     /**
      * Gets All articles in the database
+     * 
      * @return List<Article>
      */
     public List<Article> getAll() {
@@ -37,7 +38,28 @@ public class ArticleService {
     }
     
     /**
+     * Gets an article by an id.
+     * 
+     * @param id
+     * @return Article
+     */
+    public Article getById(Long id) {
+        
+        Optional<Article> maybeArticle = 
+            Optional.ofNullable(this.repository.getById(id));
+        
+        maybeArticle.ifPresentOrElse(value -> {}, () -> {
+            throw new CustomApiException(
+                HttpStatus.NOT_FOUND,
+                "Specified record " + id + " not found");
+        });
+        
+        return maybeArticle.get();
+    }
+    
+    /**
      * Gets an article by a url string. 
+     * 
      * @param url
      * @return Article
      * @throws CustomException 404 if not found.
@@ -64,6 +86,7 @@ public class ArticleService {
     
     /**
      * Generates a url that is guaranteed to be unique in the database.
+     * 
      * @param title will be processed into a url
      * @return url as string
      */
@@ -97,6 +120,7 @@ public class ArticleService {
     
     /**
      * Creates a new article based on the incoming request body.
+     * 
      * @param incomingBody 
      * @return Article
      */
@@ -143,6 +167,7 @@ public class ArticleService {
     
     /**
      * Update article by specifying the article id and fields in the request body.
+     * 
      * @param id
      * @param incomingBody
      * @return updated article
@@ -211,6 +236,7 @@ public class ArticleService {
     
     /**
      * Checks if article exists then deletes it.
+     * 
      * @param id
      */
     public void delete(Long id) {

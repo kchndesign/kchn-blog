@@ -40,6 +40,17 @@ public class ArticleController {
     }
     
     /**
+     * Gets an article by id.
+     * 
+     * @param id
+     * @return Article
+     */
+    @GetMapping(value ="/id/{id}")
+    public ResponseEntity<Article> getById(@PathVariable Long id) {
+        return new ResponseEntity<Article>(this.service.getById(id), HttpStatus.OK);
+    }
+    
+    /**
      * Gets article by url.
      * 
      * @param url
