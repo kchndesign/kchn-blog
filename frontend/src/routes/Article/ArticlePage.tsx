@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Article, getArticleByUrl } from '../../services/api';
 import ReactMarkdown from 'react-markdown';
 

@@ -1,5 +1,7 @@
 package com.kchn.blog.api.Article;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -17,6 +19,6 @@ import org.springframework.data.jpa.repository.Query;
 public interface ArticleRepositoryInterface extends JpaRepository<Article, Long>, ArticleRepositoryUtils{
 
     @Query(value = "SELECT a FROM Article a WHERE a.url = ?1")
-    Article findArticleByUrl(String url);
+    Optional<Article> findArticleByUrl(String url);
     
 }

@@ -46,7 +46,7 @@ public class ArticleService {
     public Article getById(Long id) {
         
         Optional<Article> maybeArticle = 
-            Optional.ofNullable(this.repository.getById(id));
+            this.repository.findById(id);
         
         maybeArticle.ifPresentOrElse(value -> {}, () -> {
             throw new CustomApiException(
@@ -73,7 +73,8 @@ public class ArticleService {
          * If article is found, return it
          */
         
-        Optional<Article> maybeArticle = Optional.ofNullable(this.repository.findArticleByUrl(url));
+        Optional<Article> maybeArticle = 
+            this.repository.findArticleByUrl(url);
         
         if (maybeArticle.isEmpty()) {
             throw new CustomApiException(
@@ -106,13 +107,13 @@ public class ArticleService {
         String url = shortTitle.replaceAll(" ", "-").toLowerCase();
         
         Optional<Article> maybeArticle = 
-            Optional.ofNullable(this.repository.findArticleByUrl(url));
+            this.repository.findArticleByUrl(url);
         
 //        While the url exists in the repository, generate random string to concat onto the end and re-search.
         while (!maybeArticle.isEmpty()) {
             String random = RandomString.make(5);
             url = shortTitle.concat("-" + random);
-            maybeArticle = Optional.ofNullable(this.repository.findArticleByUrl(url));
+            maybeArticle = this.repository.findArticleByUrl(url);
         }
         
         return url;
@@ -188,7 +189,7 @@ public class ArticleService {
          */
         
         Optional<Article> maybeArticle = 
-            Optional.ofNullable(this.repository.getById(id));
+            this.repository.findById(id);
         
         maybeArticle.ifPresentOrElse(value -> {}, () -> {
             throw new CustomApiException(
