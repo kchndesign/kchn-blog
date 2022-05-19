@@ -2,10 +2,12 @@ package com.kchn.blog.api.Article;
 
 import java.time.LocalDate;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 
 /**
  * This Article class describes both the schema of the database we use and the object we pass around called article.
@@ -29,6 +31,8 @@ public class Article {
     /**
      * Long string of markdown content.
      */
+    @Lob
+    @Column(name = "content", columnDefinition = "LONGTEXT NOT NULL")
     private String content;
     
     /**

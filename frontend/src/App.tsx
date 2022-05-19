@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, Router, Routes } from 'react-router-dom';
 
 import './App.css';
+import NavBar from './components/NavBar/NavBar';
 import ArticlePage from './routes/Article/ArticlePage';
 import Home from './routes/Home';
 import NewArticle from './routes/NewArticle';
@@ -9,6 +10,7 @@ import NewArticle from './routes/NewArticle';
 const App: React.FC = () => {
     return (
         <>
+            <NavBar />
             <div className="App">
                 <Routes>
                     {/* Home page */}

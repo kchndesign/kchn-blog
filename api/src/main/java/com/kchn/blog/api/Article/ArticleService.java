@@ -2,6 +2,7 @@ package com.kchn.blog.api.Article;
 
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -120,6 +121,44 @@ public class ArticleService {
     }
     
     /**
+     * Generate meta description
+     * 
+     * Takes body input and filters out titles 
+     * 
+     * @param body
+     * @return
+     */
+    private Optional<String> generateMetaDesc(String body) {
+        /*
+         * Get an array of all match groups.
+         * For each array item, trim of whitespace and see if it still contains text.
+         * Save the first one that isn't empty after trimming
+         * 
+         * Limit that string length to 100 characters.
+         * Return.
+         */
+        
+        String regex = "^[^#]+$";
+        String firstParagraph = null;
+        Matcher matcher = Pattern
+            .compile(regex, Pattern.MULTILINE)
+            .matcher(body);
+        while(matcher.find()) {
+            String currentGroup = matcher.group().strip();
+            if (currentGroup.length() > 0) {
+                firstParagraph = currentGroup;
+                break;
+            }
+        }
+        
+        if (firstParagraph == null ) {
+            return Optional.ofNullable(null);
+        }
+        
+        return Optional.of(firstParagraph.substring(0, 100));
+    }
+    
+    /**
      * Creates a new article based on the incoming request body.
      * 
      * @param incomingBody 
@@ -132,6 +171,7 @@ public class ArticleService {
          * Populate non-input fields:
          *      published date: date now;
          *      url: use private util.
+         *      if no meta desc: generate
          */
         
 //        Set mandatory
@@ -144,6 +184,7 @@ public class ArticleService {
         String bodyByline = incomingBody.getByline();
         String bodyMetaTitle = incomingBody.getMetaTitle();
         String bodyMetaDesc = incomingBody.getMetaDesc();
+        String bodyKicker = incomingBody.getKicker();
         
         if (bodyByline != null && bodyByline.length() > 0) {
             article.setByline(bodyByline);
@@ -153,8 +194,16 @@ public class ArticleService {
             article.setMetaTitle(bodyMetaTitle);
         }
         
+//        generate meta description to be used by 
         if (bodyMetaDesc != null && bodyMetaDesc.length() > 0 ) {
             article.setMetaDesc(bodyMetaDesc);
+        } else {
+            this.generateMetaDesc(article.getContent())
+                .ifPresent(value -> article.setMetaDesc(value));
+        }
+        
+        if (bodyKicker != null && bodyKicker.length() > 0) {
+            article.setKicker(bodyKicker);
         }
         
 //        Set date

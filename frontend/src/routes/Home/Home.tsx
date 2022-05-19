@@ -4,8 +4,7 @@ import PostsList from '../../components/PostsList';
 const Home = () => {
     return (
         <div>
-            <h1>Kevin's blog</h1>
-            <p>WElcome to kevins blog</p>
+            <h1>Kevin's devblog</h1>
 
             <PostsList />
         </div>

@@ -24,6 +24,8 @@ public class ArticlePostDTO {
     
     private String metaDesc;
     
+    private String kicker;
+    
     @NotEmpty
     private String author;
 
@@ -32,7 +34,7 @@ public class ArticlePostDTO {
     }    
     
     public ArticlePostDTO(@NotEmpty String title, String byline,
-        @NotEmpty String content, String metaTitle, String metaDesc,
+        @NotEmpty String content, String metaTitle, String metaDesc, String kicker,
         @NotEmpty String author) {
         super();
         this.title = title;
@@ -40,6 +42,7 @@ public class ArticlePostDTO {
         this.content = content;
         this.metaTitle = metaTitle;
         this.metaDesc = metaDesc;
+        this.kicker = kicker;
         this.author = author;
     }
 
@@ -58,6 +61,10 @@ public class ArticlePostDTO {
 
     public String getMetaTitle() {
         return metaTitle;
+    }
+
+    public String getKicker() {
+        return kicker;
     }
 
     public String getMetaDesc() {
@@ -86,6 +93,11 @@ public class ArticlePostDTO {
 
     public void setMetaDesc(String metaDesc) {
         this.metaDesc = metaDesc;
+    }
+    
+
+    public void setKicker(String kicker) {
+        this.kicker = kicker;
     }
 
     public void setAuthor(String author) {

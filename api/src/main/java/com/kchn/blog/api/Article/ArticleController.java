@@ -1,6 +1,7 @@
 package com.kchn.blog.api.Article;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -93,7 +94,7 @@ public class ArticleController {
     }
     
 //    @GetMapping(value = "/test/{title}")
-//    public String test(@PathVariable String title ) {
-//        return this.service.generateUniqueUrl(title);
+//    public Optional<String> test(@RequestBody String title ) {
+//        return this.service.generateMetaDesc(title);
 //    }
 }

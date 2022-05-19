@@ -9,6 +9,8 @@ import reportWebVitals from './reportWebVitals';
 import GlobalStyles from './styled/GlobalStyles';
 // react skeleton css on top level
 import 'react-loading-skeleton/dist/skeleton.css';
+import { ThemeProvider } from 'styled-components';
+import { theme } from './styled/GlobalTheme';
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
@@ -18,7 +20,9 @@ root.render(
         <GlobalStyles />
         <React.StrictMode>
             <BrowserRouter>
-                <App />
+                <ThemeProvider theme={theme}>
+                    <App />
+                </ThemeProvider>
             </BrowserRouter>
         </React.StrictMode>
     </>

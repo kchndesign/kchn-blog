@@ -40,6 +40,13 @@ const GlobalStyles = createGlobalStyle`
         font: inherit;
     }
 
+    /* Renove default link styling */
+
+    a {
+        color: inherit;
+        text-decoration: none;
+    }
+
     /* Remove all animations and transitions for people that prefer not to see them */
     @media (prefers-reduced-motion: reduce) {
         html:focus-within {
